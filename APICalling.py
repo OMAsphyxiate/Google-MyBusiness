@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 import sys, pyodbc, requests, os
 sys.path.insert(0, 'C:/Users/Christian/Desktop/GitHub/')
 sys.path.insert(0, 'C:/Users/Christian/Desktop/GitHub/FacebookInsights/')
+=======
+import sys, pyodbc, requests
+#sys.path.insert(0, 'C:/Users/Reaper/Dropbox/Blah/')
+sys.path.insert(0, 'C:/Users/Christian/Dropbox/Blah/')
+sys.path.insert(0, 'E:/GitHub/FacebookInsights/')
+>>>>>>> b93c513a2237428bd28cbfadbeaa3a9d143d4f17
 import Connect #Import connection file
 import Functions #Import Functions for creating file
 
