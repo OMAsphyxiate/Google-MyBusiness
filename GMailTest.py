@@ -1,20 +1,22 @@
 import requests
-from requests_oauthlib import OAuth2Session
+import Connect
 
 
-client_id = r'' #Google MB API client ID
-client_secret = r'' #Google MB secrete
-redirect_local = 'localhost:8080'
-redirect_url = '' #Redirect URL
+from oauth2client import client
+import httplib2
 
-scope = ['https://www.googleapis.com/auth/userinfo.email',
-		'https://www.googleapis.com/auth/userinfo.profile']
+CLIENT_ID=
+CLIENT_SECRET=
+SCOPE="https://www.googleapis.com/auth/plus.business.manage"
 
-oauth = OAuth2Session (client_id, redirect_uri=redirect_url, scope=scope)
+# credentials is the JSON credentials you obtain and saved previously
 
-authorization_url, state = oauth.authorization_url(
-	'https://accounts.google.com/o/oauth2/auth',
-	access_type="offline", approval_prompt="force")
-
-print ('Please go to %s and authorize access.' %authorization_url)
-authorization_response = raw_input('Enter the full callback URL')
+credentials = client.OAuth2Credentials.from_json(credentials)
+if credentials.access_token_expired:
+    # refresh it
+    http = httplib2.Http()
+    http = credentials.authorize(http)
+    credentials.refresh(http)
+    access_token = credentials.token_response["access_token"]
+else:
+    access_token = credentials.token_response["access_token"]

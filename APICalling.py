@@ -1,20 +1,13 @@
-<<<<<<< HEAD
 import sys, pyodbc, requests, os
-sys.path.insert(0, 'C:/Users/Christian/Desktop/GitHub/')
-sys.path.insert(0, 'C:/Users/Christian/Desktop/GitHub/FacebookInsights/')
-=======
-import sys, pyodbc, requests
-#sys.path.insert(0, 'C:/Users/Reaper/Dropbox/Blah/')
-sys.path.insert(0, 'C:/Users/Christian/Dropbox/Blah/')
-sys.path.insert(0, 'E:/GitHub/FacebookInsights/')
->>>>>>> b93c513a2237428bd28cbfadbeaa3a9d143d4f17
 import Connect #Import connection file
-import Functions #Import Functions for creating file
+from FacebookInsights import Functions #Import Functions for creating file
+from DatabaseSyncs import DBFunctions as dbf
 
-access_token = '' #Generated Access Token for GMB
+#Generated Access Token for GMB
+access_token = input('Enter access token: ')
 
 FileName = 'GoogleReviews.txt'
-FileLocation = Connect.FilePath + FileName
+FileLocation = Connect.GMBPath + FileName
 
 try:
     os.remove(FileLocation) #Remove file if it already exists
@@ -22,19 +15,19 @@ except OSError:
     pass
 
 CentralDatabase = pyodbc.connect('DRIVER={%s};SERVER=%s;DATABASE=%s;UID=%s;PWD=%s' % (
-    Connect.SQLDriver,
-    Connect.SQLServer,
-    Connect.SQLDatabase,
-    Connect.SQLUID,
-    Connect.SQLPWD)) #Connect to Central Database
+    Connect.MSDriver,
+    Connect.MSServer,
+    Connect.MSDatabase,
+    Connect.MSUID,
+    Connect.MSPWD)) #Connect to Central Database
 
 GMBCursor = CentralDatabase.cursor()
 GoogleIDs = GMBCursor.execute('SELECT GoogleID FROM [Clinic].[Master] WHERE GoogleID IS NOT NULL ')
 
 for item in GoogleIDs:
-    Connect.GoogleList.extend(item)
+    dbf.GoogleList.extend(item)
 
-for location in Connect.GoogleList:
+for location in dbf.GoogleList:
     url = ("https://mybusiness.googleapis.com/v3/accounts/107604422420814997819/locations/%s/reviews?access_token=" % location)
     post_url = requests.get(url+access_token)
     posts = post_url.json()
@@ -58,4 +51,4 @@ for location in Connect.GoogleList:
             except:
                 var5 = 'No Display Name'
             var6 = post['createTime']
-            Functions.WriteFile(FileName,location,var1,var2,var3,var4,var5,var6) #Write data to file
+            Functions.WriteFile(FileLocation,location,var1,var2,var3,var4,var5,var6) #Write data to file
