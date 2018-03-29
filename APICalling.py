@@ -8,6 +8,7 @@ access_token = input('Enter access token: ')
 
 FileName = 'GoogleReviews.txt'
 FileLocation = Connect.GMBPath + FileName
+AccountID = Connect.AccountID
 
 try:
     os.remove(FileLocation) #Remove file if it already exists
@@ -28,7 +29,7 @@ for item in GoogleIDs:
     dbf.GoogleList.extend(item)
 
 for location in dbf.GoogleList:
-    url = ("https://mybusiness.googleapis.com/v3/accounts/107604422420814997819/locations/%s/reviews?access_token=" % location)
+    url = ("https://mybusiness.googleapis.com/v3/accounts/%s/locations/%s/reviews?access_token=" %s AccountID, location)
     post_url = requests.get(url+access_token)
     posts = post_url.json()
 
